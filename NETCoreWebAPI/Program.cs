@@ -27,7 +27,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -39,4 +43,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
